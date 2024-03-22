@@ -10,4 +10,5 @@ public class DataContext : DbContext
     }
 
     public DbSet<SubscriberEntity> Subscribers { get; set; }
+    public DbSet<ContactEntity> Contact { get; set; }
 }
