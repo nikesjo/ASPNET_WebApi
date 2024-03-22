@@ -10,5 +10,6 @@ public class DataContext : DbContext
     }
 
     public DbSet<SubscriberEntity> Subscribers { get; set; }
-    public DbSet<ContactEntity> Contact { get; set; }
+    public DbSet<ContactEntity> Contacts { get; set; }
+    public DbSet<CourseEntity> Courses { get; set; }
 }
