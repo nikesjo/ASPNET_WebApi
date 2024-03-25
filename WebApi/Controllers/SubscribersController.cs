@@ -22,7 +22,7 @@ public class SubscribersController(DataContext context) : ControllerBase
             {
                 try
                 {
-                    _context.Subscribers.Add(dto);
+                    //_context.Subscribers.Add(dto);
                     await _context.SaveChangesAsync();
                     return Created("", null);
                 }

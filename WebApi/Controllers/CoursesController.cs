@@ -28,7 +28,7 @@ public class CoursesController : ControllerBase
             {
                 try
                 {
-                    _context.Courses.Add(dto);
+                    //_context.Courses.Add(dto);
                     await _context.SaveChangesAsync();
                     return Created("", null);
                 }
@@ -74,7 +74,7 @@ public class CoursesController : ControllerBase
         {
             try
             {
-                course = dto;
+                //course = dto;
                 _context.Courses.Update(course);
                 await _context.SaveChangesAsync();
                 return Ok(course);
