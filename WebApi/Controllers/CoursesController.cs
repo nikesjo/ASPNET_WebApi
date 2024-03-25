@@ -1,13 +1,14 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
-using Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Filters;
 
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[UseApiKey]
 public class CoursesController : ControllerBase
 {
     private readonly DataContext _context;
@@ -82,6 +83,22 @@ public class CoursesController : ControllerBase
             {
                 return Problem("Unable to update course.");
             }
+        }
+
+        return NotFound();
+    }
+    #endregion
+
+    #region DELETE
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteOne(int id)
+    {
+        var course = await _context.Courses.FirstOrDefaultAsync(x => x.Id == id);
+        if (course != null)
+        {
+            _context.Courses.Remove(course);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         return NotFound();

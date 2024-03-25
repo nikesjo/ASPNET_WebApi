@@ -1,11 +1,13 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Filters;
 
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[UseApiKey]
 public class ContactController(DataContext context) : ControllerBase
 {
     private readonly DataContext _context = context;
