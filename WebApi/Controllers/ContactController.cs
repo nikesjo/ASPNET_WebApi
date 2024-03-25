@@ -1,8 +1,6 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Controllers;
 
@@ -19,7 +17,7 @@ public class ContactController(DataContext context) : ControllerBase
         {
             try
             {
-                _context.Contact.Add(dto);
+                _context.Contacts.Add(dto);
                 await _context.SaveChangesAsync();
                 return Ok();
             }
