@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Filters;
@@ -9,6 +10,7 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [UseApiKey]
+[Authorize]
 public class SubscribersController(DataContext context) : ControllerBase
 {
     private readonly DataContext _context = context;
