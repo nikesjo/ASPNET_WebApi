@@ -21,7 +21,7 @@ public class ContactController(DataContext context) : ControllerBase
         {
             try
             {
-                _context.Contacts.Add(dto);
+                //_context.Contacts.Add(dto);
                 await _context.SaveChangesAsync();
                 return Ok();
             }

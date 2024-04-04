@@ -15,15 +15,4 @@ public class ContactEntity
     public string? ServiceOption { get; set; }
 
     public string Message { get; set; } = null!;
-
-    public static implicit operator ContactEntity(ContactDto dto)
-    {
-        return new ContactEntity
-        {
-            FullName = dto.FullName,
-            Email = dto.Email,
-            ServiceOption = dto.ServiceOption,
-            Message = dto.Message
-        };
-    }
 }
