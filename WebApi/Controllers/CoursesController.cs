@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
+using Infrastructure.Factories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,14 +12,9 @@ namespace WebApi.Controllers;
 [ApiController]
 [UseApiKey]
 [Authorize]
-public class CoursesController : ControllerBase
+public class CoursesController(DataContext context) : ControllerBase
 {
-    private readonly DataContext _context;
-
-    public CoursesController(DataContext context)
-    {
-        _context = context;
-    }
+    private readonly DataContext _context = context;
 
     #region CREATE
     [HttpPost]
@@ -48,10 +44,29 @@ public class CoursesController : ControllerBase
     #endregion
 
     #region READ
+
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(string category = "", string searchQuery = "")
     {
-        return Ok(await _context.Courses.ToListAsync());
+        var query = _context.Courses.Include(i => i.Category).AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(category) && category != "all")
+            query = query.Where(x => x.Category!.CategoryName == category);
+
+        if (!string.IsNullOrWhiteSpace(searchQuery))
+            query = query.Where(x => x.Title.Contains(searchQuery) || x.Author.Contains(searchQuery));
+
+        query = query.OrderByDescending(o => o.LastUpdated);
+
+        var courses = await query.ToListAsync();
+
+        var response = new CourseResult
+        {
+            Succeeded = true,
+            Courses = CourseFactory.Create(courses)
+        };
+
+        return Ok(response);
     }
 
     [HttpGet("{id}")]
@@ -65,6 +80,7 @@ public class CoursesController : ControllerBase
 
         return NotFound();
     }
+
     #endregion
 
     #region UPDATE
