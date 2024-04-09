@@ -46,8 +46,11 @@ public class CoursesController(DataContext context) : ControllerBase
     #region READ
 
     [HttpGet]
-    public async Task<IActionResult> GetAll(string category = "", string searchQuery = "")
+    public async Task<IActionResult> GetAll(string category = "", string searchQuery = "", int pageNumber = 1, int pageSize = 10)
     {
+
+        #region query filters
+
         var query = _context.Courses.Include(i => i.Category).AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(category) && category != "all")
@@ -58,13 +61,15 @@ public class CoursesController(DataContext context) : ControllerBase
 
         query = query.OrderByDescending(o => o.LastUpdated);
 
-        var courses = await query.ToListAsync();
+        #endregion
 
         var response = new CourseResult
         {
             Succeeded = true,
-            Courses = CourseFactory.Create(courses)
+            TotalItems = await query.CountAsync()
         };
+        response.TotalPages = (int)Math.Ceiling(response.TotalItems / (double)pageSize);
+        response.Courses = CourseFactory.Create(await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync());
 
         return Ok(response);
     }
