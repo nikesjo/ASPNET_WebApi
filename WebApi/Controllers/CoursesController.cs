@@ -11,12 +11,12 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [UseApiKey]
-[Authorize]
 public class CoursesController(DataContext context) : ControllerBase
 {
     private readonly DataContext _context = context;
 
     #region CREATE
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(CourseDto dto)
     {
@@ -89,6 +89,7 @@ public class CoursesController(DataContext context) : ControllerBase
     #endregion
 
     #region UPDATE
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateOne(int id, CourseDto dto)
     {
@@ -113,6 +114,7 @@ public class CoursesController(DataContext context) : ControllerBase
     #endregion
 
     #region DELETE
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteOne(int id)
     {
