@@ -10,7 +10,7 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [UseApiKey]
-[Authorize]
+//[Authorize]
 public class SubscribersController(DataContext context) : ControllerBase
 {
     private readonly DataContext _context = context;
@@ -24,7 +24,7 @@ public class SubscribersController(DataContext context) : ControllerBase
             {
                 try
                 {
-                    //_context.Subscribers.Add(dto);
+                    _context.Subscribers.Add(dto);
                     await _context.SaveChangesAsync();
                     return Created("", null);
                 }
@@ -43,14 +43,19 @@ public class SubscribersController(DataContext context) : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSubscriber(string id)
     {
-        var subscriber = await _context.Subscribers.FirstOrDefaultAsync(x => x.Id == id);
-        if (subscriber != null)
+        if (ModelState.IsValid)
         {
-            _context.Subscribers.Remove(subscriber);
-            await _context.SaveChangesAsync();
-            return Ok();
+            var subscriber = await _context.Subscribers.FirstOrDefaultAsync(x => x.Id == id);
+            if (subscriber != null)
+            {
+                _context.Subscribers.Remove(subscriber);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+
+            return NotFound();
         }
 
-        return NotFound();
+        return BadRequest();
     }
 }

@@ -2,6 +2,7 @@
 using Infrastructure.Factories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace WebApi.Controllers
 {
@@ -14,8 +15,14 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var categories = await _context.Categories.OrderBy(o => o.CategoryName).ToListAsync();
-            return Ok(CategoryFactory.Create(categories));
+            try
+            {
+                var categories = await _context.Categories.OrderBy(o => o.CategoryName).ToListAsync();
+                return Ok(CategoryFactory.Create(categories));
+            }
+            catch (Exception ex) { Debug.WriteLine("ERROR :: " + ex.Message); }
+
+            return BadRequest();
         }
     }
 }

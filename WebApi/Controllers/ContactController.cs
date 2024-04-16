@@ -9,7 +9,7 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [UseApiKey]
-[Authorize]
+//[Authorize]
 public class ContactController(DataContext context) : ControllerBase
 {
     private readonly DataContext _context = context;
@@ -21,7 +21,7 @@ public class ContactController(DataContext context) : ControllerBase
         {
             try
             {
-                //_context.Contacts.Add(dto);
+                _context.Contacts.Add(dto);
                 await _context.SaveChangesAsync();
                 return Ok();
             }

@@ -16,4 +16,19 @@ public class SubscriberEntity
     public bool EventUpdates { get; set; }
     public bool StartupsWeekly { get; set; }
     public bool Podcasts { get; set; }
+
+
+    public static implicit operator SubscriberEntity(SubscriberDto dto)
+    {
+        return new SubscriberEntity
+        {
+            Email = dto.Email,
+            DailyNewsLetter = dto.DailyNewsLetter,
+            AdvertisingUpdates = dto.AdvertisingUpdates,
+            WeekInReview = dto.WeekInReview,
+            EventUpdates = dto.EventUpdates,
+            StartupsWeekly = dto.StartupsWeekly,
+            Podcasts = dto.Podcasts
+        };
+    }
 }

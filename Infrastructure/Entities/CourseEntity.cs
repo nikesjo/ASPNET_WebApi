@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Infrastructure.Dtos;
+using System.ComponentModel.DataAnnotations;
 
 namespace Infrastructure.Entities;
 
@@ -21,4 +22,28 @@ public class CourseEntity
 
     public int? CategoryId { get; set; }
     public CategoryEntity? Category { get; set; }
+
+
+    public static implicit operator CourseEntity(CourseDto dto)
+    {
+        return new CourseEntity
+        {
+            Title = dto.Title,
+            Author = dto.Author,
+            OriginalPrice = dto.OriginalPrice,
+            DiscountPrice = dto.DiscountPrice,
+            Hours = dto.Hours,
+            LikesInNumbers = dto.LikesInNumbers,
+            LikesInProcent = dto.LikesInProcent,
+            IsBestSeller = dto.IsBestSeller,
+            ImageUrl = dto.ImageUrl,
+            AuthorImageUrl = dto.AuthorImageUrl,
+            Created = DateTime.Now,
+            LastUpdated = DateTime.Now,
+            Category = new CategoryEntity
+            {
+                CategoryName = dto.Category
+            }
+        };
+    }
 }

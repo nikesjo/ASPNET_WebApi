@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using WebApi.Filters;
@@ -30,7 +31,8 @@ namespace WebApi.Controllers
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return Ok(tokenHandler.WriteToken(token));
             }
-            catch { }
+            catch (Exception ex) { Debug.WriteLine("ERROR :: " + ex.Message); }
+
             return Unauthorized();
         }
     }
