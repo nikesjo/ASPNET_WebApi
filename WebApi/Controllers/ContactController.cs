@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
+using Infrastructure.Factories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
@@ -21,9 +22,10 @@ public class ContactController(DataContext context) : ControllerBase
         {
             try
             {
-                _context.Contacts.Add(dto);
+                var contactEntity = ContactFactory.Create(dto);
+                _context.Contacts.Add(contactEntity);
                 await _context.SaveChangesAsync();
-                return Ok();
+                return Created("", null);
             }
             catch
             {
