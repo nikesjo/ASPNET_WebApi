@@ -1,7 +1,6 @@
 ﻿using Infrastructure.Contexts;
 using Infrastructure.Dtos;
 using Infrastructure.Factories;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
 
@@ -10,7 +9,6 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [UseApiKey]
-//[Authorize]
 public class ContactController(DataContext context) : ControllerBase
 {
     private readonly DataContext _context = context;
